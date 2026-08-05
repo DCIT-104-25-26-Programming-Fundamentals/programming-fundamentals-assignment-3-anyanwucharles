@@ -75,3 +75,122 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+function addition(a, b) {
+    return a + b;
+}
+
+function subtraction(a, b) {
+    return a - b;
+}
+
+function multiplication(a, b) {
+    return a * b;
+}
+
+function division(a, b) {
+    if (b === 0) {
+        return 'Error: Cannot divide by zero.';
+    }
+    return a / b;
+}
+
+function modulus(a, b) {
+    if (b === 0) {
+        return 'Error: Cannot calculate modulus with zero.';
+    }
+    return a % b;
+}
+
+function exponentiation(a, b) {
+    return a ** b;
+}
+
+function getTwoNumbers() {
+    const num1Input = readlineSync.question('Enter first number: ');
+    const num1 = parseFloat(num1Input);
+
+    const num2Input = readlineSync.question('Enter second number: ');
+    const num2 = parseFloat(num2Input);
+
+    if (isNaN(num1) || isNaN(num2)) {
+        console.log('Error: Invalid number input. Please enter valid numbers.');
+        return null;
+    }
+
+    return { num1, num2 };
+}
+
+function main() {
+    let running = true;
+
+    while (running) {
+        console.log('============================');
+        console.log('     SIMPLE CALCULATOR');
+        console.log('============================');
+        console.log('1. Addition');
+        console.log('2. Subtraction');
+        console.log('3. Multiplication');
+        console.log('4. Division');
+        console.log('5. Modulus');
+        console.log('6. Exponentiation');
+        console.log('7. Quit');
+
+        const choice = readlineSync.question('Select an operation (1-7): ');
+
+        if (choice === '7') {
+            console.log('Goodbye!');
+            running = false;
+            continue;
+        }
+
+        if (!['1', '2', '3', '4', '5', '6'].includes(choice)) {
+            console.log('Error: Invalid choice. Please select a number between 1 and 7.');
+            continue;
+        }
+
+        const operands = getTwoNumbers();
+        if (!operands) continue;
+
+        const { num1, num2 } = operands;
+        let result;
+        let operationSymbol;
+
+        switch (choice.trim()) {
+            case '1':
+                result = addition(num1, num2);
+                operationSymbol = '+';
+                break;
+            case '2':
+                result = subtraction(num1, num2);
+                operationSymbol = '-';
+                break;
+            case '3':
+                result = multiplication(num1, num2);
+                operationSymbol = '*';
+                break;
+            case '4':
+                result = division(num1, num2);
+                operationSymbol = '/';
+                break;
+            case '5':
+                result = modulus(num1, num2);
+                operationSymbol = '%';
+                break;
+            case '6':
+                result = exponentiation(num1, num2);
+                operationSymbol = '**'
+                break;
+        }
+        if (typeof result === 'string') {
+            console.log(result);
+        } else {
+            const formattedResult = Number.isInteger(result) ? result : result.toFixed(2);
+            console.log(`Result: ${num1} ${operationSymbol} ${num2} = ${formattedResult}`);
+        }
+    }
+}
+
+main();
+
